@@ -34,16 +34,11 @@ flutter run android
 
 ## Deadlines ( Should be strictly followed )
 
-|**TASK** | **DEADLINE** | **Assigned To**
-
-|--|--|--|
-
+| **TASK** | **DEADLINE** | **Assigned To** |
+| ------------- | ------------- | ------------- |
 | Information Gathering | 15th March | `Subhan Talal` |
-
 | Algorithm Development | 12th March 2022 | `Umar Ahmed & Subhan Ahmed` |
-
 | User Interface Design | 14th March 2022 | `Don't Know Yet` |
-
 | Testing & Pitch | 18th March 2022 | `Umer Waseem` |
 
 # Working Of Algorithm
