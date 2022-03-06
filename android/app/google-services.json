@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "246024256477",
+    "project_id": "myey-727bb",
+    "storage_bucket": "myey-727bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:246024256477:android:db24b1de1794e74832d434",
+        "android_client_info": {
+          "package_name": "com.gamatechs.myey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "246024256477-9fetfu433otmcsh7p78vie5iltdqi5kf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnwxAQ7YxAA_JVTShaICaIPXKH7E803GA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "246024256477-9fetfu433otmcsh7p78vie5iltdqi5kf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "246024256477-41t49ikom159dtgc0d4h7m8d8a5lslg0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gamatechs.myey"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

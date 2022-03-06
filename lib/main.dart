@@ -1,6 +1,14 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:camera/camera.dart';
+import 'package:myey/components/detection/FaceDetector.dart';
 
-void main() {
+List<CameraDescription> cameras = [];
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  cameras = await availableCameras();
   runApp(const MyApp());
 }
 
@@ -12,54 +20,80 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const OnBoarding(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+class OnBoarding extends StatefulWidget {
+  const OnBoarding({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<OnBoarding> createState() => _OnBoardingState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _OnBoardingState extends State<OnBoarding> {
+  Widget _buildImage(String assetName, [double width = 350]) {
+    return Image.asset('assets/images/$assetName', width: width);
+  }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  void _startScanning() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => FaceDetectorView()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
       body: Center(
-        child: Column(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                _buildImage('logo.png'),
+                Container(
+                  margin: const EdgeInsets.all(30),
+                  child: Column(children: const [
+                    Text(
+                      'Welcome to Myey App',
+                      style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+                    Text(
+                      'By GDSC IUK',
+                      style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green),
+                    ),
+                  ]),
+                ),
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      onPressed: () => _startScanning(),
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 12, bottom: 12),
+                        child: const Text(
+                          'Start Scanning',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )),
+                )
+              ],
+            )
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

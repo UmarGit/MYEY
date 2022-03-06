@@ -1,4 +1,4 @@
-package com.gamatechs.myey.myey
+package com.gamatechs.myey
 
 import io.flutter.embedding.android.FlutterActivity
 
