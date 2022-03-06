@@ -101,4 +101,4 @@ Screen -> Face: Average the screen to face distance over the last five measureme
 
 # Reference
 
-[GET RESEARCH PAPER HERE](https://github.com/UmarGit/MYEY/research_paper.pdf)
+[GET RESEARCH PAPER HERE](https://github.com/UmarGit/MYEY/blob/main/research_paper.pdf)
