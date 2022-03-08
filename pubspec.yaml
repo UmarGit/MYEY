@@ -14,6 +14,7 @@ dependencies:
   camera: ^0.9.4+14
   google_ml_kit: ^0.7.3
   image_picker: ^0.8.4+10
+  speech_to_text: ^5.4.3
 
 dev_dependencies:
   flutter_test:

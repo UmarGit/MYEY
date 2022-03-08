@@ -83,7 +83,7 @@ class _CameraViewState extends State<CameraView> {
   Widget? _floatingActionButton() {
     if (_mode == ScreenMode.gallery) return null;
     if (cameras.length == 1) return null;
-    return Container(
+    return SizedBox(
         height: 70.0,
         width: 70.0,
         child: FloatingActionButton(
@@ -145,7 +145,7 @@ class _CameraViewState extends State<CameraView> {
   Widget _galleryBody() {
     return ListView(shrinkWrap: true, children: [
       _image != null
-          ? Container(
+          ? SizedBox(
               height: 400,
               width: 400,
               child: Stack(
@@ -156,21 +156,21 @@ class _CameraViewState extends State<CameraView> {
                 ],
               ),
             )
-          : Icon(
+          : const Icon(
               Icons.image,
               size: 200,
             ),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ElevatedButton(
-          child: Text('From Gallery'),
+          child: const Text('From Gallery'),
           onPressed: () => _getImage(ImageSource.gallery),
         ),
       ),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ElevatedButton(
-          child: Text('Take a picture'),
+          child: const Text('Take a picture'),
           onPressed: () => _getImage(ImageSource.camera),
         ),
       ),
@@ -202,7 +202,7 @@ class _CameraViewState extends State<CameraView> {
     final camera = cameras[_cameraIndex];
     _controller = CameraController(
       camera,
-      ResolutionPreset.max,
+      ResolutionPreset.low,
       enableAudio: false,
     );
     _controller?.initialize().then((_) {
@@ -228,10 +228,11 @@ class _CameraViewState extends State<CameraView> {
   }
 
   Future _switchLiveCamera() async {
-    if (_cameraIndex == 0)
+    if (_cameraIndex == 0) {
       _cameraIndex = 1;
-    else
+    } else {
       _cameraIndex = 0;
+    }
     await _stopLiveFeed();
     await _startLiveFeed();
   }

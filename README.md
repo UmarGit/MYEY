@@ -26,24 +26,24 @@
 
 To run the project on **IOS**
 
+```bash
 flutter run ios
+```
 
 To run the project on **ANDROID**
 
+```bash
 flutter run android
+```
 
 ## Deadlines ( Should be strictly followed )
 
-| **TASK** | **DEADLINE** | **Assigned To** |
-| ------------- | ------------- | ------------- |
-| Information Gathering | 15th March | `Subhan Talal` |
-| Algorithm Development | 12th March 2022 | `Umar Ahmed & Subhan Ahmed` |
-| User Interface Design | 14th March 2022 | `Don't Know Yet` |
-| Testing & Pitch | 18th March 2022 | `Umer Waseem` |
-
-# Working Of Algorithm
-
-StackEdit stores your files in your browser, which means all your files are automatically saved locally and are accessible **offline!**
+| **Task** | **Deadline** | **Assigned To** |  **`Status`** |
+| --- | --- | --- | --- |
+| Information Gathering | 15th March | `Subhan Talal` | **40%** |
+| Algorithm Development | 12th March 2022 | `Umar Ahmed & Subhan Ahmed` | **60%** |
+| User Interface Design | 14th March 2022 | `Don't Know Yet` | **0%** |
+| Testing & Pitch | 18th March 2022 | `Umer Waseem` | **10%** |
 
 ## Formula
 
@@ -52,20 +52,12 @@ A reference is needed to derive a metric value for the screen to face distance: 
     dsf = pref / psf * dref
 
 > Where:
-
->
-
 > - `dsf` is the **screen to face** distance
-
 > - `psf` is the **eye to eye** distance on the **actual picture**.
-
 > - `dref` is the **screen to face** distance of the **reference picture**
-
 > - `pref` is the **eye to eye** distance on the **reference picture**.
 
->
-
-> _We assume a linear relation between the screen to face distance and the eye to eye distance. The experiment outlined in Section IV and V reinforces our linearity assumption in a range from **19cm** to **89cm** screen to face distance._
+> We assume a linear relation between the screen to face distance and the eye to eye distance. The experiment outlined in Section IV and V reinforces our linearity assumption in a range from **19cm** to **89cm** screen to face distance.
 
 ## Explanation ( What to achieve )
 
@@ -101,4 +93,4 @@ Screen -> Face: Average the screen to face distance over the last five measureme
 
 # Reference
 
-[GET RESEARCH PAPER HERE](https://github.com/UmarGit/MYEY/blob/main/research_paper.pdf)
+[GET RESEARCH PAPER HERE](https://github.com/UmarGit/MYEY/research_paper.pdf)

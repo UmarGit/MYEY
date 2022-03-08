@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:myey/components/detection/FaceDetector.dart';
+import 'package:myey/components/listen/Listen.dart';
 
 List<CameraDescription> cameras = [];
 
@@ -41,7 +42,12 @@ class _OnBoardingState extends State<OnBoarding> {
 
   void _startScanning() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => FaceDetectorView()));
+        context, MaterialPageRoute(builder: (context) => const FaceDetectorView()));
+  }
+
+  void _startListening() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const Listen()));
   }
 
   @override
@@ -76,20 +82,38 @@ class _OnBoardingState extends State<OnBoarding> {
                   ]),
                 ),
                 Container(
-                  margin: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                      onPressed: () => _startScanning(),
-                      child: Container(
-                        margin: const EdgeInsets.only(top: 12, bottom: 12),
-                        child: const Text(
-                          'Start Scanning',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      )),
-                )
+                    margin: const EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                            onPressed: () => _startScanning(),
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.only(top: 12, bottom: 12),
+                              child: const Text(
+                                'Start Scanning',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )),
+                        ElevatedButton(
+                            onPressed: () => _startListening(),
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.only(top: 12, bottom: 12),
+                              child: const Text(
+                                'Start Listening',
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )),
+                      ],
+                    ))
               ],
             )
           ],
