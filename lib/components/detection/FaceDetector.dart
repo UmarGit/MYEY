@@ -4,7 +4,13 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 import '../camera/CameraView.dart';
 import 'painter/FaceDetectorPainter.dart';
 
+int distance = 0;
+
+Set onDistance(dist) => {distance = dist};
+
 class FaceDetectorView extends StatefulWidget {
+  const FaceDetectorView({Key? key}) : super(key: key);
+
   @override
   _FaceDetectorViewState createState() => _FaceDetectorViewState();
 }
@@ -26,13 +32,22 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
 
   @override
   Widget build(BuildContext context) {
-    return CameraView(
-      title: 'Face Detector',
-      customPaint: customPaint,
-      onImage: (inputImage) {
-        processImage(inputImage);
-      },
-      initialDirection: CameraLensDirection.front,
+    return Scaffold(
+      body: CameraView(
+        title: 'Face Detector',
+        customPaint: customPaint,
+        onImage: (inputImage) {
+          processImage(inputImage);
+        },
+        initialDirection: CameraLensDirection.front,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {},
+        child: Text(
+          distance.toString(),
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 
@@ -46,6 +61,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
           faces,
           inputImage.inputImageData!.size,
           inputImage.inputImageData!.imageRotation);
+
       customPaint = CustomPaint(painter: painter);
     } else {
       customPaint = null;

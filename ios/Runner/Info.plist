@@ -44,8 +44,10 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>NSCameraUsageDescription</key>
-	<string>Can I use the camera please?</string>
+	<string>Myey needs camera access to work</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Can I use the mic please?</string>
+	<string>Myey needs microphone access to work</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Myey needs microphone access to work</string>
 </dict>
 </plist>
