@@ -1,26 +1,10 @@
-# Myey
+# Myey [![Myey's Completion Progress - 44%](https://img.shields.io/static/v1?label=Myey's+Completion+Progress&message=44%&color=brightgreen&logo=flutter&logoColor=blue)](https://github.com/UmarGit/MYEY) [![Myey Flutter Release Apk](https://github.com/UmarGit/MYEY/actions/workflows/flutter-apk-release.yml/badge.svg)](https://github.com/UmarGit/MYEY/actions/workflows/flutter-apk-release.yml)
 
-> Our solution is for healthy eyesight by identifying its weaknesses
+> Our solution is for healthy eyesight by identifying its weaknesses earlier.
 
-> earlier.
+> The problem I see is that in my surroundings people are very hesitant to visit the doctor to get their eyes tested but they delay the process so much which will slowly weaken their eyes more and more.
 
->
-
-> The problem I see is that in my surroundings people are very hesitant
-
-> to visit the doctor to get their eyes tested but they delay the
-
-> process so much which will slowly weaken their eyes more and more.
-
->
-
-> We are working on a solution to test the eyes of individuals to give
-
-> an estimate of their visual power and testing their eyes on the app
-
-> rewards them. So they can redeem those points in clinics and hospitals
-
-> for discounts.
+> We are working on a solution to test the eyes of individuals to give an estimate of their visual power and testing their eyes on the app rewards them. So they can redeem those points in clinics and hospitals for discounts.
 
 ## Getting Started
 
