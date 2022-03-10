@@ -111,12 +111,13 @@ class _ListenState extends State<Listen> {
                                     ? _lastWords[0]
                                     : 'UNDEF') +
                                 ' = ' +
-                              _randomAlphabet +
+                                _randomAlphabet +
                                 ' => ' +
                                 'Validating results: ' +
                                 ((_lastWords.isNotEmpty
-                                            ? _lastWords[0]
-                                            : 'UNDEF').toUpperCase() ==
+                                                ? _lastWords[0]
+                                                : 'UNDEF')
+                                            .toUpperCase() ==
                                         _randomAlphabet)
                                     .toString()
                             // If listening isn't active but could be tell the user
