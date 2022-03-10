@@ -58,27 +58,27 @@ class _CameraViewState extends State<CameraView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: _switchScreenMode,
-              child: Icon(
-                _mode == ScreenMode.liveFeed
-                    ? Icons.photo_library_outlined
-                    : (Platform.isIOS
-                        ? Icons.camera_alt_outlined
-                        : Icons.camera),
-              ),
-            ),
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      //   actions: [
+      //     Padding(
+      //       padding: const EdgeInsets.only(right: 20.0),
+      //       child: GestureDetector(
+      //         onTap: _switchScreenMode,
+      //         child: Icon(
+      //           _mode == ScreenMode.liveFeed
+      //               ? Icons.photo_library_outlined
+      //               : (Platform.isIOS
+      //                   ? Icons.camera_alt_outlined
+      //                   : Icons.camera),
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // ),
       body: _body(),
-      floatingActionButton: _floatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: _floatingActionButton(),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -113,32 +113,43 @@ class _CameraViewState extends State<CameraView> {
     if (_controller?.value.isInitialized == false) {
       return Container();
     }
+
+    final size = MediaQuery.of(context).size;
+    final deviceRatio = (size.width + 100) / size.height;
+
     return Container(
       color: Colors.black,
       child: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          CameraPreview(_controller!),
-          if (widget.customPaint != null) widget.customPaint!,
-          Positioned(
-            bottom: 100,
-            left: 50,
-            right: 50,
-            child: Slider(
-              value: zoomLevel,
-              min: minZoomLevel,
-              max: maxZoomLevel,
-              onChanged: (newSliderValue) {
-                setState(() {
-                  zoomLevel = newSliderValue;
-                  _controller!.setZoomLevel(zoomLevel);
-                });
-              },
-              divisions: (maxZoomLevel - 1).toInt() < 1
-                  ? null
-                  : (maxZoomLevel - 1).toInt(),
+          ClipRect(
+            child: Container(
+              child: AspectRatio(
+                aspectRatio: _controller!.value.aspectRatio,
+                child: CameraPreview(_controller!),
+              ),
             ),
-          )
+          ),
+          if (widget.customPaint != null) widget.customPaint!,
+          // Positioned(
+          //   bottom: 100,
+          //   left: 50,
+          //   right: 50,
+          //   child: Slider(
+          //     value: zoomLevel,
+          //     min: minZoomLevel,
+          //     max: maxZoomLevel,
+          //     onChanged: (newSliderValue) {
+          //       setState(() {
+          //         zoomLevel = newSliderValue;
+          //         _controller!.setZoomLevel(zoomLevel);
+          //       });
+          //     },
+          //     divisions: (maxZoomLevel - 1).toInt() < 1
+          //         ? null
+          //         : (maxZoomLevel - 1).toInt(),
+          //   ),
+          // )
         ],
       ),
     );
