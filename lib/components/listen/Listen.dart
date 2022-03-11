@@ -13,6 +13,7 @@ class Listen extends StatefulWidget {
 }
 
 class _ListenState extends State<Listen> {
+  bool _firstStart = true;
   final SpeechToText _speechToText = SpeechToText();
   bool _speechEnabled = false;
   String _lastWords = ' ';
@@ -41,6 +42,7 @@ class _ListenState extends State<Listen> {
 
   /// Each time to start a speech recognition session
   void _startListening() async {
+    _firstStart = false;
     setState(() {
       _randomAlphabet = generateRandomString();
     });
@@ -72,78 +74,83 @@ class _ListenState extends State<Listen> {
       appBar: AppBar(
         title: const Text('Speech Demo'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-                padding: const EdgeInsets.all(16),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Name something from this alphabet:',
-                            style: TextStyle(fontSize: 20.0),
-                          ),
-                          Text(
-                            _randomAlphabet,
-                            style: const TextStyle(
-                                fontSize: 180.0, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      )
-                    ],
+      body: _firstStart
+          ? const Center(
+              child: Text("Tap Microphone To Start"),
+            )
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                      padding: const EdgeInsets.all(16),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Name something from this alphabet:',
+                                  style: TextStyle(fontSize: 20.0),
+                                ),
+                                Text(
+                                  _randomAlphabet,
+                                  style: const TextStyle(
+                                      fontSize: 180.0,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      )),
+                  Expanded(
+                    child: Container(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(_lastWords),
+                            Text(
+                              // If listening is active show the recognized words
+                              !_speechToText.isListening
+                                  ? (_lastWords.isNotEmpty
+                                          ? _lastWords[0]
+                                          : 'UNDEF') +
+                                      ' = ' +
+                                      _randomAlphabet +
+                                      ' => ' +
+                                      'Validating results: ' +
+                                      ((_lastWords.isNotEmpty
+                                                      ? _lastWords[0]
+                                                      : 'UNDEF')
+                                                  .toUpperCase() ==
+                                              _randomAlphabet)
+                                          .toString()
+                                  // If listening isn't active but could be tell the user
+                                  // how to start it, otherwise indicate that speech
+                                  // recognition is not yet ready or not supported on
+                                  // the target device
+                                  : _speechEnabled
+                                      ? 'listening...'
+                                      : 'Speech not available',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        )),
                   ),
-                )),
-            Expanded(
-              child: Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(_lastWords),
-                      Text(
-                        // If listening is active show the recognized words
-                        !_speechToText.isListening
-                            ? (_lastWords.isNotEmpty
-                                    ? _lastWords[0]
-                                    : 'UNDEF') +
-                                ' = ' +
-                                _randomAlphabet +
-                                ' => ' +
-                                'Validating results: ' +
-                                ((_lastWords.isNotEmpty
-                                                ? _lastWords[0]
-                                                : 'UNDEF')
-                                            .toUpperCase() ==
-                                        _randomAlphabet)
-                                    .toString()
-                            // If listening isn't active but could be tell the user
-                            // how to start it, otherwise indicate that speech
-                            // recognition is not yet ready or not supported on
-                            // the target device
-                            : _speechEnabled
-                                ? 'Tap the microphone to start listening...'
-                                : 'Speech not available',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  )),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed:
             // If not yet listening for speech start, otherwise stop
             _speechToText.isNotListening ? _startListening : _stopListening,
         tooltip: 'Listen',
-        child:
-            Icon(_speechToText.isNotListening ? Icons.mic_off : Icons.hearing),
+        child: Icon(_speechToText.isNotListening ? Icons.mic : Icons.hearing),
       ),
     );
   }
