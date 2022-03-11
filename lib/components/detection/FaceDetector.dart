@@ -1,8 +1,6 @@
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:myey/main.dart';
 import '../camera/CameraView.dart';
 import 'painter/FaceDetectorPainter.dart';
 
@@ -25,6 +23,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
   ));
   bool isBusy = false;
   CustomPaint? customPaint;
+  bool _doneWithRef = false;
 
   /*/
     P_REFS is the multiple distances, 10 times with different
@@ -59,6 +58,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
     }
 
     P_REF = P_REFS.reduce((value, element) => value + element) ~/ P_REFS.length;
+    _doneWithRef = true;
   }
 
   /*/
@@ -66,9 +66,10 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
    */
   double getDistance() {
     try {
-      double SCREEN_TO_FACE_DISTANCE = ((P_REF / P_SF) * D_REF);
-      double TO_FOOT = SCREEN_TO_FACE_DISTANCE / 305;
-      return TO_FOOT;
+      double screenToFaceDistance = ((P_REF / P_SF) * D_REF);
+      //converting millimeter to foot
+      double toFeet = screenToFaceDistance / 305;
+      return toFeet;
     } catch (e) {
       return -1;
     }
@@ -76,54 +77,86 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
 
   @override
   Widget build(BuildContext context) {
-    double DISTANCE = getDistance();
-    bool inRange = DISTANCE > 1.7 && DISTANCE < 2.0;
-
+    double distance = getDistance();
+    bool inRange = distance > 1.7 && distance < 2.0;
     return Scaffold(
       body: Stack(
         children: [
-          CameraView(
-            title: 'Face Detector',
-            customPaint: customPaint,
-            onImage: (inputImage) {
-              processImage(inputImage);
-            },
-            initialDirection: CameraLensDirection.front,
-          ),
-          ColorFiltered(
-            colorFilter: ColorFilter.mode(Colors.black.withOpacity(1),
-                BlendMode.srcOut), // This one will create the magic
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      backgroundBlendMode: BlendMode.dstOut),
-                ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 100),
-                    child: ClipOval(
-                      child: Container(
-                        height: 440,
-                        width: 240,
+          //tried hiding cameraView with indexedStack but it stopped updating distance
+          // IndexedStack(index: inRange ? 1 : 0, children: [
+            CameraView(
+              title: 'Face Detector',
+              customPaint: customPaint,
+              onImage: (inputImage) {
+                processImage(inputImage);
+              },
+              initialDirection: CameraLensDirection.front,
+            ),
+            // SizedBox(
+            //   child: Container(decoration: BoxDecoration(color: Colors.yellow)),
+            //   width: MediaQuery.of(context).size.width,
+            //   height: MediaQuery.of(context).size.height,
+            // ),
+          // ]),
+          //when the app takes the reference pictures oval shape for face disappears
+          _doneWithRef
+              ? Container()
+              : ColorFiltered(
+                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(1),
+                      BlendMode.srcOut), // This one will create the magic
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Container(
                         decoration: const BoxDecoration(
-                          color: Colors.green,
+                            color: Colors.white,
+                            backgroundBlendMode: BlendMode.dstOut),
+                      ),
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          margin: const EdgeInsets.only(top: 100),
+                          child: ClipOval(
+                            child: Container(
+                              height: 440,
+                              width: 240,
+                              decoration: const BoxDecoration(
+                                color: Colors.green,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                height: 50,
+              ),
+              Center(
+                child: _doneWithRef
+                    ? const Text(
+                        "Position your phone 2 feet away from you",
+                        style: TextStyle(
+                            color: Colors.white, backgroundColor: Colors.black),
+                      )
+                    : const Text(
+                        "Position your face",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+              ),
+            ],
           ),
           Container(
             alignment: Alignment.bottomCenter,
             margin: const EdgeInsets.only(bottom: 160),
             child: Text(
-              getDistance().toStringAsFixed(4) + ' foot',
+              getDistance().toStringAsFixed(4) + ' feet',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 32,
