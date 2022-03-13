@@ -121,11 +121,9 @@ class _CameraViewState extends State<CameraView> {
         fit: StackFit.expand,
         children: <Widget>[
           ClipRect(
-            child: Container(
-              child: AspectRatio(
-                aspectRatio: _controller!.value.aspectRatio,
-                child: CameraPreview(_controller!),
-              ),
+            child: AspectRatio(
+              aspectRatio: deviceRatio,
+              child: CameraPreview(_controller!),
             ),
           ),
           if (widget.customPaint != null) widget.customPaint!,
@@ -193,7 +191,9 @@ class _CameraViewState extends State<CameraView> {
     if (pickedFile != null) {
       _processPickedFile(pickedFile);
     } else {
-      print('No image selected.');
+      if (kDebugMode) {
+        print('No image selected.');
+      }
     }
     setState(() {});
   }
