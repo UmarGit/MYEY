@@ -1,3 +1,7 @@
+// ignore_for_file: file_names
+
+import 'dart:async';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
@@ -6,7 +10,15 @@ import 'painter/FaceDetectorPainter.dart';
 
 int P_SF = 0;
 
-Set onDistance(dist) => {P_SF = dist};
+List<int> faceSize = [];
+
+int center = 0;
+
+Set onDistances(distances) => {
+      P_SF = distances[0],
+      faceSize = [distances[1], distances[2]],
+      center = distances[3],
+    };
 
 class FaceDetectorView extends StatefulWidget {
   const FaceDetectorView({Key? key}) : super(key: key);
@@ -24,6 +36,11 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
   bool isBusy = false;
   CustomPaint? customPaint;
   bool _doneWithRef = false;
+  bool isCalibrated = false;
+  int measurements = 0;
+
+  /// declare a timer
+  Timer? timer;
 
   /*/
     P_REFS is the multiple distances, 10 times with different
@@ -46,6 +63,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
   void dispose() {
     faceDetector.close();
     super.dispose();
+    timer?.cancel();
   }
 
   /*/
@@ -61,6 +79,26 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
     _doneWithRef = true;
   }
 
+  void getMeasurements() {
+    timer = Timer.periodic(
+      const Duration(seconds: 20),
+      (tim) {
+        if (measurements >= 10) {
+          P_REF = P_REFS.reduce((value, element) => value + element) ~/
+              P_REFS.length;
+          _doneWithRef = true;
+          timer?.cancel();
+        } else {
+          P_REFS.add(P_SF);
+          setState(() {
+            measurements++;
+            isCalibrated = true;
+          });
+        }
+      },
+    );
+  }
+
   /*/
     Calculating the distance using all the values
    */
@@ -68,8 +106,8 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
     try {
       double screenToFaceDistance = ((P_REF / P_SF) * D_REF);
       //converting millimeter to foot
-      double toFeet = screenToFaceDistance / 305;
-      return toFeet;
+      double toCm = screenToFaceDistance / 10;
+      return toCm;
     } catch (e) {
       return -1;
     }
@@ -78,57 +116,101 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
   @override
   Widget build(BuildContext context) {
     double distance = getDistance();
-    bool inRange = distance > 1.7 && distance < 2.0;
+    bool inRange = distance > 40 && distance < 65.00;
+    bool canCalibrate = faceSize.isNotEmpty
+        ? ((faceSize[0] * 3.779528).toInt() - 100) > 400 &&
+            ((faceSize[1] * 3.779528).toInt() - 100) > 300
+        : false;
+
+    if (canCalibrate && !isCalibrated && center > 130 && center < 150) {
+      P_REFS = [];
+      getMeasurements();
+    }
+
     return Scaffold(
       body: Stack(
         children: [
-          //tried hiding cameraView with indexedStack but it stopped updating distance
-          // IndexedStack(index: inRange ? 1 : 0, children: [
-            CameraView(
-              title: 'Face Detector',
-              customPaint: customPaint,
-              onImage: (inputImage) {
-                processImage(inputImage);
-              },
-              initialDirection: CameraLensDirection.front,
-            ),
-            // SizedBox(
-            //   child: Container(decoration: BoxDecoration(color: Colors.yellow)),
-            //   width: MediaQuery.of(context).size.width,
-            //   height: MediaQuery.of(context).size.height,
-            // ),
-          // ]),
-          //when the app takes the reference pictures oval shape for face disappears
+          CameraView(
+            title: 'Face Detector',
+            customPaint: customPaint,
+            onImage: (inputImage) {
+              processImage(inputImage);
+            },
+            initialDirection: CameraLensDirection.front,
+          ),
           _doneWithRef
-              ? Container()
-              : ColorFiltered(
-                  colorFilter: ColorFilter.mode(Colors.black.withOpacity(1),
-                      BlendMode.srcOut), // This one will create the magic
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                            color: Colors.white,
-                            backgroundBlendMode: BlendMode.dstOut),
-                      ),
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: Container(
-                          margin: const EdgeInsets.only(top: 100),
-                          child: ClipOval(
+              ? AnimatedContainer(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration:
+                      BoxDecoration(color: inRange ? Colors.green : Colors.red),
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.fastOutSlowIn,
+                )
+              : Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    ColorFiltered(
+                      colorFilter: ColorFilter.mode(Colors.black.withOpacity(1),
+                          BlendMode.srcOut), // This one will create the magic
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.black,
+                              backgroundBlendMode: BlendMode.dstOut,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
                             child: Container(
-                              height: 440,
-                              width: 240,
-                              decoration: const BoxDecoration(
-                                color: Colors.green,
+                              margin: const EdgeInsets.only(top: 100),
+                              child: Container(
+                                height: 400,
+                                width: 300,
+                                decoration: const BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(400)),
+                                ),
                               ),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        margin: const EdgeInsets.only(top: 100),
+                        child: Container(
+                          height: 400,
+                          width: 300,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            border: Border.all(color: Colors.red, width: 2),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(400)),
+                          ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 100),
+                          child: CircularProgressIndicator(
+                            value: ((measurements / 10) * 100),
+                            semanticsLabel: 'Linear progress indicator',
+                          ),
+                        )),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(measurements.toString() + '\n\n\n',
+                          style: TextStyle(color: Colors.white)),
+                    )
+                  ],
                 ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -140,39 +222,28 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
                 child: _doneWithRef
                     ? const Text(
                         "Position your phone 2 feet away from you",
-                        style: TextStyle(
-                            color: Colors.white, backgroundColor: Colors.black),
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       )
                     : const Text(
-                        "Position your face",
+                        "Position your face ",
                         style: TextStyle(
-                          color: Colors.white,
-                        ),
+                            fontWeight: FontWeight.bold, color: Colors.white),
                       ),
               ),
             ],
           ),
-          Container(
-            alignment: Alignment.bottomCenter,
-            margin: const EdgeInsets.only(bottom: 160),
-            child: Text(
-              getDistance().toStringAsFixed(4) + ' feet',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 32,
-                color: inRange ? Colors.green : Colors.red,
-              ),
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () => measureRef(),
-            child: const Icon(Icons.compare_arrows),
-          )
+          // Container(
+          //   alignment: Alignment.bottomCenter,
+          //   margin: const EdgeInsets.only(bottom: 160),
+          //   child: Text(
+          //     getDistance().toStringAsFixed(2) + ' cm',
+          //     style: TextStyle(
+          //       fontWeight: FontWeight.bold,
+          //       fontSize: 32,
+          //       color: inRange ? Colors.black : Colors.brown,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../main.dart';
-import 'dart:io';
+import '../../old.dart';
+import 'dart:math' as math;
 
 enum ScreenMode { liveFeed, gallery }
 
@@ -27,9 +27,7 @@ class CameraView extends StatefulWidget {
 }
 
 class _CameraViewState extends State<CameraView> {
-  ScreenMode _mode = ScreenMode.liveFeed;
   CameraController? _controller;
-  File? _image;
   ImagePicker? _imagePicker;
   int _cameraIndex = 0;
   double zoomLevel = 0.0, minZoomLevel = 0.0, maxZoomLevel = 0.0;
@@ -56,157 +54,42 @@ class _CameraViewState extends State<CameraView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(widget.title),
-      //   actions: [
-      //     Padding(
-      //       padding: const EdgeInsets.only(right: 20.0),
-      //       child: GestureDetector(
-      //         onTap: _switchScreenMode,
-      //         child: Icon(
-      //           _mode == ScreenMode.liveFeed
-      //               ? Icons.photo_library_outlined
-      //               : (Platform.isIOS
-      //                   ? Icons.camera_alt_outlined
-      //                   : Icons.camera),
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // ),
       body: _body(),
-      // floatingActionButton: _floatingActionButton(),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  Widget? _floatingActionButton() {
-    if (_mode == ScreenMode.gallery) return null;
-    if (cameras.length == 1) return null;
-    return SizedBox(
-        height: 70.0,
-        width: 70.0,
-        child: FloatingActionButton(
-          child: Icon(
-            Platform.isIOS
-                ? Icons.flip_camera_ios_outlined
-                : Icons.flip_camera_android_outlined,
-            size: 40,
-          ),
-          onPressed: _switchLiveCamera,
-        ));
-  }
-
   Widget _body() {
-    Widget body;
-    if (_mode == ScreenMode.liveFeed) {
-      body = _liveFeedBody();
-    } else {
-      body = _galleryBody();
-    }
-    return body;
-  }
-
-  Widget _liveFeedBody() {
     if (_controller?.value.isInitialized == false) {
       return Container();
     }
 
-    final size = MediaQuery.of(context).size;
-    final deviceRatio = (size.width + 100) / size.height;
+    var tmp = MediaQuery.of(context).size;
+    var screenH = math.max(tmp.height, tmp.width);
+    var screenW = math.min(tmp.height, tmp.width);
+    tmp = _controller!.value.previewSize!;
+    var previewH = math.max(tmp.height, tmp.width);
+    var previewW = math.min(tmp.height, tmp.width);
+    var screenRatio = screenH / screenW;
+    var previewRatio = previewH / previewW;
 
     return Container(
       color: Colors.black,
-      child: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          ClipRect(
-            child: AspectRatio(
-              aspectRatio: deviceRatio,
-              child: CameraPreview(_controller!),
-            ),
-          ),
-          if (widget.customPaint != null) widget.customPaint!,
-          // Positioned(
-          //   bottom: 100,
-          //   left: 50,
-          //   right: 50,
-          //   child: Slider(
-          //     value: zoomLevel,
-          //     min: minZoomLevel,
-          //     max: maxZoomLevel,
-          //     onChanged: (newSliderValue) {
-          //       setState(() {
-          //         zoomLevel = newSliderValue;
-          //         _controller!.setZoomLevel(zoomLevel);
-          //       });
-          //     },
-          //     divisions: (maxZoomLevel - 1).toInt() < 1
-          //         ? null
-          //         : (maxZoomLevel - 1).toInt(),
-          //   ),
-          // )
-        ],
+      child: OverflowBox(
+        maxHeight: screenRatio > previewRatio
+            ? screenH
+            : screenW / previewW * previewH,
+        maxWidth: screenRatio > previewRatio
+            ? screenH / previewH * previewW
+            : screenW,
+        child: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            CameraPreview(_controller!),
+            if (widget.customPaint != null) widget.customPaint!,
+          ],
+        ),
       ),
     );
-  }
-
-  Widget _galleryBody() {
-    return ListView(shrinkWrap: true, children: [
-      _image != null
-          ? SizedBox(
-              height: 400,
-              width: 400,
-              child: Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  Image.file(_image!),
-                  if (widget.customPaint != null) widget.customPaint!,
-                ],
-              ),
-            )
-          : const Icon(
-              Icons.image,
-              size: 200,
-            ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: ElevatedButton(
-          child: const Text('From Gallery'),
-          onPressed: () => _getImage(ImageSource.gallery),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: ElevatedButton(
-          child: const Text('Take a picture'),
-          onPressed: () => _getImage(ImageSource.camera),
-        ),
-      ),
-    ]);
-  }
-
-  Future _getImage(ImageSource source) async {
-    final pickedFile = await _imagePicker?.getImage(source: source);
-    if (pickedFile != null) {
-      _processPickedFile(pickedFile);
-    } else {
-      if (kDebugMode) {
-        print('No image selected.');
-      }
-    }
-    setState(() {});
-  }
-
-  void _switchScreenMode() async {
-    if (_mode == ScreenMode.liveFeed) {
-      _mode = ScreenMode.gallery;
-      await _stopLiveFeed();
-    } else {
-      _mode = ScreenMode.liveFeed;
-      await _startLiveFeed();
-    }
-    setState(() {});
   }
 
   Future _startLiveFeed() async {
@@ -236,24 +119,6 @@ class _CameraViewState extends State<CameraView> {
     await _controller?.stopImageStream();
     await _controller?.dispose();
     _controller = null;
-  }
-
-  Future _switchLiveCamera() async {
-    if (_cameraIndex == 0) {
-      _cameraIndex = 1;
-    } else {
-      _cameraIndex = 0;
-    }
-    await _stopLiveFeed();
-    await _startLiveFeed();
-  }
-
-  Future _processPickedFile(PickedFile pickedFile) async {
-    setState(() {
-      _image = File(pickedFile.path);
-    });
-    final inputImage = InputImage.fromFilePath(pickedFile.path);
-    widget.onImage(inputImage);
   }
 
   Future _processCameraImage(CameraImage image) async {

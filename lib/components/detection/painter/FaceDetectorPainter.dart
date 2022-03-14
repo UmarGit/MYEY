@@ -15,7 +15,7 @@ class FaceDetectorPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.0
+      ..strokeWidth = 2.0
       ..color = Colors.red;
 
     for (final Face face in faces) {
@@ -24,33 +24,64 @@ class FaceDetectorPainter extends CustomPainter {
             face.getContour(FaceContourType.leftEye)?.positionsList;
         final pointsRightEye =
             face.getContour(FaceContourType.rightEye)?.positionsList;
+        final pointsFace = face.getContour(FaceContourType.face)?.positionsList;
+        final pointsNose =
+            face.getContour(FaceContourType.noseBridge)?.positionsList;
 
-        if (pointsLeftEye != null && pointsRightEye != null) {
-          final pointLeftEyeX = pointsLeftEye[8].dx;
-          final pointLeftEyeY = pointsLeftEye[8].dy;
+        if (pointsLeftEye != null &&
+            pointsRightEye != null &&
+            pointsFace != null &&
+            pointsNose != null) {
 
-          final pointRightEyeX = pointsRightEye[0].dx;
-          final pointRightEyeY = pointsRightEye[0].dy;
+          final coordinatesAxis = [
+            [
+              pointsLeftEye[8].dx,
+              pointsLeftEye[8].dy,
+              pointsRightEye[0].dx,
+              pointsRightEye[0].dy
+            ],
+            [
+              pointsFace[0].dx,
+              pointsFace[0].dy,
+              pointsFace[18].dx,
+              pointsFace[18].dy
+            ],
+            [
+              pointsFace[27].dx,
+              pointsFace[27].dy,
+              pointsFace[9].dx,
+              pointsFace[9].dy
+            ],
+          ];
 
-          final distance = sqrt((pow((pointLeftEyeX - pointRightEyeX), 2) +
-              pow((pointLeftEyeY - pointRightEyeY), 2))).toInt();
+          List<int> distances = [];
 
-          onDistance(distance);
+          for (List<double> coordinate in coordinatesAxis) {
+            canvas.drawLine(
+                Offset(
+                    translateX(
+                        coordinate[0], rotation, size, absoluteImageSize),
+                    translateY(
+                        coordinate[1], rotation, size, absoluteImageSize)),
+                Offset(
+                    translateX(
+                        coordinate[2], rotation, size, absoluteImageSize),
+                    translateY(
+                        coordinate[3], rotation, size, absoluteImageSize)),
+                paint);
 
-          canvas.drawLine(
-              Offset(
-                  translateX(pointLeftEyeX, rotation, size, absoluteImageSize),
-                  translateY(pointLeftEyeY, rotation, size, absoluteImageSize)),
-              Offset(
-                  translateX(pointRightEyeX, rotation, size, absoluteImageSize),
-                  translateY(
-                      pointRightEyeY, rotation, size, absoluteImageSize)),
-              paint);
+            distances.add(sqrt((pow((coordinate[0] - coordinate[2]), 2) +
+                    pow((coordinate[1] - coordinate[3]), 2)))
+                .toInt());
+          }
+
+          distances.add(pointsNose[1].dy.toInt());
+
+          onDistances(distances);
         }
       }
 
       paintContour();
-
     }
   }
 
