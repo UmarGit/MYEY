@@ -29,8 +29,8 @@ jobs:
       - run: echo "Running flutter pub get command 🔥 "
 
       # Statically analyze the Dart code for any errors.
-      - run: flutter analyze .
-      - run: echo "Analyzing code 🔬 "
+      # - run: flutter analyze .
+      # - run: echo "Analyzing code 🔬 "
 
       # Build apk.
       - run: flutter build apk
