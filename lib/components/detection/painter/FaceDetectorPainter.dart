@@ -3,7 +3,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import '../FaceDetector.dart';
+import '../../Screens/Scanning/FaceScan.dart';
 import 'CoordinatesTranslator.dart';
 
 class FaceDetectorPainter extends CustomPainter {

@@ -28,6 +28,7 @@ dependencies:
   table_calendar: ^3.0.1
   glassmorphism: ^2.0.1
   flutter_svg: ^1.0.3
+  we_slide: ^2.2.1
 
 dev_dependencies:
   flutter_test:

@@ -560,6 +560,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  we_slide:
+    dependency: "direct main"
+    description:
+      name: we_slide
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1"
   win32:
     dependency: transitive
     description:
