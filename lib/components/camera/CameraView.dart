@@ -2,9 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:image_picker/image_picker.dart';
-import '../../old.dart';
-import 'dart:math' as math;
+import '../../main.dart';
 
 enum ScreenMode { liveFeed, gallery }
 
@@ -28,7 +26,6 @@ class CameraView extends StatefulWidget {
 
 class _CameraViewState extends State<CameraView> {
   CameraController? _controller;
-  ImagePicker? _imagePicker;
   int _cameraIndex = 0;
   double zoomLevel = 0.0, minZoomLevel = 0.0, maxZoomLevel = 0.0;
 
@@ -36,7 +33,6 @@ class _CameraViewState extends State<CameraView> {
   void initState() {
     super.initState();
 
-    _imagePicker = ImagePicker();
     for (var i = 0; i < cameras.length; i++) {
       if (cameras[i].lensDirection == widget.initialDirection) {
         _cameraIndex = i;
@@ -63,31 +59,14 @@ class _CameraViewState extends State<CameraView> {
       return Container();
     }
 
-    var tmp = MediaQuery.of(context).size;
-    var screenH = math.max(tmp.height, tmp.width);
-    var screenW = math.min(tmp.height, tmp.width);
-    tmp = _controller!.value.previewSize!;
-    var previewH = math.max(tmp.height, tmp.width);
-    var previewW = math.min(tmp.height, tmp.width);
-    var screenRatio = screenH / screenW;
-    var previewRatio = previewH / previewW;
-
     return Container(
       color: Colors.black,
-      child: OverflowBox(
-        maxHeight: screenRatio > previewRatio
-            ? screenH
-            : screenW / previewW * previewH,
-        maxWidth: screenRatio > previewRatio
-            ? screenH / previewH * previewW
-            : screenW,
-        child: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            CameraPreview(_controller!),
-            if (widget.customPaint != null) widget.customPaint!,
-          ],
-        ),
+      child: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          CameraPreview(_controller!),
+          if (widget.customPaint != null) widget.customPaint!,
+        ],
       ),
     );
   }

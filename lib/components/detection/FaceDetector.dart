@@ -31,7 +31,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
   FaceDetector faceDetector =
       GoogleMlKit.vision.faceDetector(const FaceDetectorOptions(
     enableContours: true,
-    enableClassification: true,
+    enableClassification: false, enableLandmarks: false, mode: FaceDetectorMode.accurate,
   ));
   bool isBusy = false;
   CustomPaint? customPaint;
@@ -208,7 +208,7 @@ class _FaceDetectorViewState extends State<FaceDetectorView> {
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: Text(measurements.toString() + '\n\n\n',
-                          style: TextStyle(color: Colors.white)),
+                          style: const TextStyle(color: Colors.white)),
                     )
                   ],
                 ),
