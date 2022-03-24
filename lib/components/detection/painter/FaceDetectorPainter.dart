@@ -59,18 +59,18 @@ class FaceDetectorPainter extends CustomPainter {
           List<int> distances = [];
 
           for (List<double> coordinate in coordinatesAxis) {
-            canvas.drawLine(
-                Offset(
-                    translateX(
-                        coordinate[0], rotation, size, absoluteImageSize),
-                    translateY(
-                        coordinate[1], rotation, size, absoluteImageSize)),
-                Offset(
-                    translateX(
-                        coordinate[2], rotation, size, absoluteImageSize),
-                    translateY(
-                        coordinate[3], rotation, size, absoluteImageSize)),
-                paint);
+            // canvas.drawLine(
+            //     Offset(
+            //         translateX(
+            //             coordinate[0], rotation, size, absoluteImageSize),
+            //         translateY(
+            //             coordinate[1], rotation, size, absoluteImageSize)),
+            //     Offset(
+            //         translateX(
+            //             coordinate[2], rotation, size, absoluteImageSize),
+            //         translateY(
+            //             coordinate[3], rotation, size, absoluteImageSize)),
+            //     paint);
 
             distances.add(sqrt((pow((coordinate[0] - coordinate[2]), 2) +
                     pow((coordinate[1] - coordinate[3]), 2)))

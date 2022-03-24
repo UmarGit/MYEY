@@ -12,7 +12,7 @@ class GreenDoneIcon extends StatelessWidget {
           height: 30,
           decoration: BoxDecoration(
               shape: BoxShape.circle, color: HexColor.fromHex("78B462")),
-          child: Icon(Icons.done, color: Colors.white)),
+          child: Icon(Icons.person_rounded, color: Colors.white)),
     );
   }
 }

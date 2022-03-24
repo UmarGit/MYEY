@@ -18,32 +18,30 @@ import 'DashboardTabScreens/productivity.dart';
 // ignore: must_be_immutable
 class Dashboard extends StatelessWidget {
   Dashboard({Key? key}) : super(key: key);
-  ValueNotifier<bool> _totalTaskTrigger = ValueNotifier(true);
-  ValueNotifier<bool> _totalDueTrigger = ValueNotifier(false);
-  ValueNotifier<bool> _totalCompletedTrigger = ValueNotifier(true);
-  ValueNotifier<bool> _workingOnTrigger = ValueNotifier(false);
-  ValueNotifier<int> _buttonTrigger = ValueNotifier(0);
+  final ValueNotifier<bool> _totalTaskTrigger = ValueNotifier(true);
+  final ValueNotifier<bool> _totalDueTrigger = ValueNotifier(false);
+  final ValueNotifier<bool> _totalCompletedTrigger = ValueNotifier(true);
+  final ValueNotifier<bool> _workingOnTrigger = ValueNotifier(false);
+  final ValueNotifier<int> _buttonTrigger = ValueNotifier(0);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: SafeArea(
           child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               DashboardNav(
-                icon: FontAwesomeIcons.comment,
-                image: "assets/dummy-profile.png",
+                icon: FontAwesomeIcons.userCircle,
                 notificationCount: "2",
-                page: ChatScreen(),
                 title: "Dashboard",
                 onImageTapped: () {
-                  Get.to(() => ProfileOverview());
+                  Get.to(() => const ProfileOverview());
                 },
               ),
               AppSpaces.verticalSpace20,
-              Text("Hello,\nGDSC Team 👋",
+              Text("Hello,\nUmar Ahmed...",
                   style: GoogleFonts.lato(
                       color: Colors.white,
                       fontSize: 40,
@@ -55,13 +53,13 @@ class Dashboard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     PrimaryTabButton(
-                        buttonText: "Overview",
+                        buttonText: "Reports",
                         itemIndex: 0,
                         notifier: _buttonTrigger),
                     PrimaryTabButton(
-                        buttonText: "Productivity",
+                        buttonText: "Overview",
                         itemIndex: 1,
-                        notifier: _buttonTrigger)
+                        notifier: _buttonTrigger),
                   ],
                 ),
                 Container(
@@ -84,8 +82,8 @@ class Dashboard extends StatelessWidget {
                   valueListenable: _buttonTrigger,
                   builder: (BuildContext context, _, __) {
                     return _buttonTrigger.value == 0
-                        ? DashboardOverview()
-                        : DashboardProductivity();
+                        ? const DashboardProductivity()
+                        : const DashboardOverview();
                   })
             ]),
           ),

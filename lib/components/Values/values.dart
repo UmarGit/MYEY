@@ -1,7 +1,9 @@
 library values;
 
+import 'dart:ffi';
 import 'dart:math';
 
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
