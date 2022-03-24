@@ -112,7 +112,7 @@ class ChoosePlan extends StatelessWidget {
                   width: 120,
                   label: "Done",
                   callback: () {
-                    Get.to(() => Timeline());
+                    Get.to(() => Timeline(selectedIndex: ValueNotifier(0),));
                   })
             ]),
           ))

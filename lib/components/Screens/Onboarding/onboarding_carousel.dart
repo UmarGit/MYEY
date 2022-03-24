@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -17,6 +19,7 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
   final int _numPages = 3;
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
+  late Timer timer;
 
   List<Widget> _buildPageIndicator() {
     List<Widget> list = [];
@@ -26,10 +29,38 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
     return list;
   }
 
+  void changePage() async {
+    if ((_currentPage + 1) == _numPages) {
+      setState(() {
+        _currentPage = 0;
+      });
+
+      await _pageController.animateTo(0,
+          duration: const Duration(seconds: 1), curve: Curves.easeInOut);
+    } else {
+      await _pageController.nextPage(
+          duration: const Duration(seconds: 1), curve: Curves.easeInOut);
+    }
+  }
+
+  @override
+  void initState() {
+    timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      changePage();
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
   Widget _indicator(bool isActive) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 150),
-      margin: EdgeInsets.symmetric(horizontal: 8.0),
+      duration: const Duration(milliseconds: 150),
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
       height: 8.0,
       width: 8.0,
       decoration: BoxDecoration(
@@ -46,9 +77,9 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
         body: AnnotatedRegion<SystemUiOverlayStyle>(
             value: SystemUiOverlayStyle.light,
             child: Stack(children: [
-              Container(
-                // height: double.infinity,
-                // width: double.infinity,
+              SizedBox(
+                height: double.infinity,
+                width: double.infinity,
                 child: DarkRadialBackground(
                   color: HexColor.fromHex("#181a1f"),
                   position: "bottomRight",
@@ -56,17 +87,17 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
               ),
               //Buttons positioned below
               Column(children: [
-                Container(
+                SizedBox(
                     height: Utils.screenHeight * 1.3,
                     child: PageView(
-                        physics: ClampingScrollPhysics(),
+                        physics: const ClampingScrollPhysics(),
                         controller: _pageController,
                         onPageChanged: (int page) {
                           setState(() {
                             _currentPage = page;
                           });
                         },
-                        children: <Widget>[
+                        children: const <Widget>[
                           SliderCaptionedImage(
                               index: 0,
                               imageUrl: "assets/slider-background-1.png",
@@ -81,77 +112,75 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
                               caption: "Redeem 💰\nPoints\nOn Testing")
                         ])),
                 Padding(
-                  padding:
-                      EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+                  padding: const EdgeInsets.only(
+                      left: 20.0, right: 20.0, bottom: 20.0),
                   child: SingleChildScrollView(
-                    child: Container(
-                      child: Column(children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: _buildPageIndicator(),
-                        ),
-                        SizedBox(height: 50),
-                        Container(
-                          width: double.infinity,
-                          height: 60,
-                          child: ElevatedButton(
-                              onPressed: () {
-                                Get.to(() => EmailAddressScreen());
-                              },
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      HexColor.fromHex("76C4AE")),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50.0),
-                                          side: BorderSide(
-                                              color: HexColor.fromHex(
-                                                  "76C4AE"))))),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.email, color: Colors.white),
-                                  Text('   Continue with Email',
-                                      style: GoogleFonts.lato(
-                                          fontSize: 20, color: Colors.white)),
-                                ],
-                              )),
-                        ),
-                        SizedBox(height: 10.0),
-                        Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                text:
-                                    'By continuing you agree myey_app\'s Terms of Services & Privacy Policy.',
-                                style: GoogleFonts.lato(
-                                    fontSize: 15,
-                                    color: HexColor.fromHex("666A7A")),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: '\n\nFor compaines can ',
+                    child: Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: _buildPageIndicator(),
+                      ),
+                      const SizedBox(height: 50),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 60,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              Get.to(() => EmailAddressScreen());
+                            },
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    HexColor.fromHex("76C4AE")),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(50.0),
+                                        side: BorderSide(
+                                            color:
+                                                HexColor.fromHex("76C4AE"))))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.email, color: Colors.white),
+                                Text('   Continue with Email',
                                     style: GoogleFonts.lato(
-                                        fontSize: 15,
-                                        color: HexColor.fromHex("666A7A")),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: 'Login Here',
-                                        style: GoogleFonts.lato(
-                                            fontSize: 15,
-                                            color: HexColor.fromHex("76C4AE"),
-                                            fontWeight: FontWeight.w600),
-                                        children: <TextSpan>[],
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ))
-                      ]),
-                    ),
+                                        fontSize: 20, color: Colors.white)),
+                              ],
+                            )),
+                      ),
+                      const SizedBox(height: 10.0),
+                      Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text:
+                                  'By continuing you agree myey_app\'s Terms of Services & Privacy Policy.',
+                              style: GoogleFonts.lato(
+                                  fontSize: 15,
+                                  color: HexColor.fromHex("666A7A")),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: '\n\nFor compaines can ',
+                                  style: GoogleFonts.lato(
+                                      fontSize: 15,
+                                      color: HexColor.fromHex("666A7A")),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: 'Login Here',
+                                      style: GoogleFonts.lato(
+                                          fontSize: 15,
+                                          color: HexColor.fromHex("76C4AE"),
+                                          fontWeight: FontWeight.w600),
+                                      children: const <TextSpan>[],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ))
+                    ]),
                   ),
                 ),
               ])

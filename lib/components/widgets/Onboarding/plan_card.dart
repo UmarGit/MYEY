@@ -24,7 +24,7 @@ class PlanCard extends StatelessWidget {
       child: InkWell(
           onTap: () {
             notifierValue.value = selectedIndex;
-            print(notifierValue.value);
+            // print(notifierValue.value);
           },
           child: ValueListenableBuilder(
               valueListenable: notifierValue,

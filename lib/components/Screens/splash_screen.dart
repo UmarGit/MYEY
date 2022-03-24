@@ -24,38 +24,42 @@ class _SplashScreenState extends State<SplashScreen> {
   final Shader linearGradient = LinearGradient(
     begin: FractionalOffset.topCenter,
     colors: <Color>[HexColor.fromHex("#76C4AE"), HexColor.fromHex("#BEE9E4")],
-  ).createShader(Rect.fromLTWH(0.0, 0.0, 30.0, 40.0));
+  ).createShader(const Rect.fromLTWH(0.0, 0.0, 30.0, 40.0));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [
-        DarkRadialBackground(
-          color: HexColor.fromHex("#181a1f"),
-          position: "topLeft",
-        ),
-        AppLogo(),
-        Center(
-            child: Container(
-          child: RichText(
-            text: TextSpan(
-              text: 'My',
-              style: GoogleFonts.montserrat(fontSize: 60, fontWeight: FontWeight.bold),
-              children: <TextSpan>[
-                TextSpan(
-                    text: 'ey',
-                    style: TextStyle(
-                        foreground: Paint()..shader = linearGradient,
-                        fontWeight: FontWeight.bold)),
-              ],
-            ),
+      body: GestureDetector(
+        onTap: () => {Get.to(() => OnboardingStart())},
+        child: Stack(children: [
+          DarkRadialBackground(
+            color: HexColor.fromHex("#181a1f"),
+            position: "topLeft",
           ),
-        )),
-        // DarkRadialBackground(
-        //   color: Colors.transparent,
-        //   position: "bottomRight",
-        // ),
-      ]),
+          AppLogo(),
+          Center(
+              child: Container(
+            child: RichText(
+              text: TextSpan(
+                text: 'My',
+                style: GoogleFonts.montserrat(
+                    fontSize: 60, fontWeight: FontWeight.bold),
+                children: <TextSpan>[
+                  TextSpan(
+                      text: 'ey',
+                      style: TextStyle(
+                          foreground: Paint()..shader = linearGradient,
+                          fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+          )),
+          // DarkRadialBackground(
+          //   color: Colors.transparent,
+          //   position: "bottomRight",
+          // ),
+        ]),
+      ),
     );
   }
 }

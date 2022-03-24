@@ -43,13 +43,13 @@ class BarChartSample1State extends State<BarChartSample1> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Completed in the last 7 Days",
+                  Text("Test Completed in the last 7 Days",
                       style: GoogleFonts.lato(
                           color: HexColor.fromHex("616575"), fontSize: 13)),
                   IconButton(
                     icon: Icon(
                       isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: const Color(0xff0f4a3c),
+                      color: HexColor.fromHex("8FFFCF"),
                     ),
                     onPressed: () {
                       setState(() {
@@ -74,13 +74,13 @@ class BarChartSample1State extends State<BarChartSample1> {
               ),
               AppSpaces.verticalSpace10,
               Row(children: [
-                Text('108 Tasks',
+                Text('11 Tests',
                     style: GoogleFonts.lato(
                       fontWeight: FontWeight.bold,
                       color: mainColor,
                     )),
                 AppSpaces.horizontalSpace20,
-                Text('6 Projects',
+                Text('2 Risks',
                     style: GoogleFonts.lato(
                       fontWeight: FontWeight.bold,
                       color: barBackgroundColor,
@@ -88,26 +88,6 @@ class BarChartSample1State extends State<BarChartSample1> {
               ])
             ],
           ),
-          // Padding(
-          //   padding: const EdgeInsets.all(8.0),
-          //   child: Align(
-          //     alignment: Alignment.topRight,
-          //     child: IconButton(
-          //       icon: Icon(
-          //         isPlaying ? Icons.pause : Icons.play_arrow,
-          //         color: const Color(0xff0f4a3c),
-          //       ),
-          //       onPressed: () {
-          //         setState(() {
-          //           isPlaying = !isPlaying;
-          //           if (isPlaying) {
-          //             refreshState();
-          //           }
-          //         });
-          //       },
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );

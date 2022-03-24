@@ -31,24 +31,24 @@ class OnboardingStart extends StatelessWidget {
             right: 100,
             child: BackgroundImage(
                 scale: 1.0,
-                image: "assets/man-head.png",
-                gradient: [HexColor.fromHex("92ECEC"), HexColor.fromHex("92ECEC")])),
+                image: "assets/icon/logo.png",
+                gradient: [HexColor.fromHex("ffffff").withOpacity(0), HexColor.fromHex("ffffff").withOpacity(0)])),
 
         Positioned(
             top: Utils.screenHeight * 0.50,
             left: Utils.screenWidth * 0.12,
             child: BackgroundImage(
                 scale: 0.5,
-                image: "assets/head_cut.png",
-                gradient: [HexColor.fromHex("FD9871"), HexColor.fromHex("F7D092")])),
+                image: "assets/icon/logo.png",
+                gradient: [HexColor.fromHex("ffffff").withOpacity(0), HexColor.fromHex("ffffff").withOpacity(0)])),
 
         Positioned(
-            top: Utils.screenHeight * 0.30,
-            right: 70,
+            top: Utils.screenHeight * 0.20,
+            right: 180,
             child: BackgroundImage(
                 scale: 0.4,
-                image: "assets/girl_smile.png",
-                gradient: [HexColor.fromHex("#a7b2fd"), HexColor.fromHex("#c1a0fd")])),
+                image: "assets/icon/logo.png",
+                gradient: [HexColor.fromHex("ffffff").withOpacity(0), HexColor.fromHex("ffffff").withOpacity(0)])),
 
         //end of images
 

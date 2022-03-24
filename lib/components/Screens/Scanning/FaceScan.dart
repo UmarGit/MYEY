@@ -51,6 +51,7 @@ class _FaceScanState extends State<FaceScan> with TickerProviderStateMixin {
   int _eyeToEyeReference = 0;
   final int _distanceOfReferenceObject = 294;
   late Timer timer;
+  bool _isDetectionEnabled = false;
 
   void setFaceInFocus() {
     if (!_isFaceInView) {
@@ -114,12 +115,22 @@ class _FaceScanState extends State<FaceScan> with TickerProviderStateMixin {
     )..addListener(() {
         setState(() {});
       });
+    setState(() {
+      _isDetectionEnabled = true;
+    });
     super.initState();
   }
 
   @override
   void dispose() {
-    timer.cancel();
+    try {
+      timer.cancel();
+    } catch (e) {
+      // print("Timer Not Init");
+    }
+    setState(() {
+      _isDetectionEnabled = false;
+    });
     super.dispose();
   }
 
@@ -193,15 +204,17 @@ class _FaceScanState extends State<FaceScan> with TickerProviderStateMixin {
                                         AnimatedOpacity(
                                           opacity: !_isCalibrated ? 1 : 0.5,
                                           duration: const Duration(seconds: 1),
-                                          child: CameraView(
-                                            title: 'Face Detector',
-                                            customPaint: customPaint,
-                                            onImage: (inputImage) {
-                                              processImage(inputImage);
-                                            },
-                                            initialDirection:
-                                                CameraLensDirection.front,
-                                          ),
+                                          child: _isDetectionEnabled
+                                              ? CameraView(
+                                                  title: 'Face Detector',
+                                                  customPaint: customPaint,
+                                                  onImage: (inputImage) {
+                                                    processImage(inputImage);
+                                                  },
+                                                  initialDirection:
+                                                      CameraLensDirection.front,
+                                                )
+                                              : Container(),
                                         ),
                                         AnimatedOpacity(
                                           opacity: _isCalibrated ? 1 : 0,
@@ -251,10 +264,23 @@ class _FaceScanState extends State<FaceScan> with TickerProviderStateMixin {
                           padding: const EdgeInsets.all(44),
                           child: Column(
                             children: [
+                              _isCalibrated
+                                  ? LinearProgressIndicator(
+                                      value: (getDistance() / 60),
+                                      color: (getDistance() / 60) >= 0.9
+                                          ? Colors.green
+                                          : Colors.red,
+                                      semanticsLabel:
+                                          'Distance between face and camera',
+                                    )
+                                  : Container(),
+                              AppSpaces.verticalSpace10,
                               Text(
                                   _isCalibrated
-                                      ? "Your face is successfully calibrated"
-                                      : "Align you face",
+                                      ? (getDistance() / 60) >= 0.9
+                                          ? "Perfect now click on start test"
+                                          : "Move away your camera"
+                                      : "Align your face",
                                   textAlign: TextAlign.center,
                                   style: GoogleFonts.lato(
                                       fontSize: 20,
@@ -263,7 +289,7 @@ class _FaceScanState extends State<FaceScan> with TickerProviderStateMixin {
                               AppSpaces.verticalSpace10,
                               Text(
                                 _isCalibrated
-                                    ? "Now click on the start button to start the test"
+                                    ? "Please move your camera away upto two feet from your phone"
                                     : "Make sure you are sitting in a room with proper lighting",
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.lato(
@@ -274,21 +300,21 @@ class _FaceScanState extends State<FaceScan> with TickerProviderStateMixin {
                             ],
                           ),
                         ),
-                        _isCalibrated
-                            ? AppPrimaryButton(
-                                buttonHeight: 50,
-                                buttonWidth: 200,
-                                buttonText: "Start Test",
-                                callback: () {
-                                  setState(() {
-                                    _slideController.show();
-                                  });
-                                },
-                              )
-                            : Container(),
                         AppSpaces.verticalSpace10,
                       ])),
-              panel: TakeTest(distance: distance),
+              panel: (getDistance() / 60) >= 0.9
+                  ? TakeTest(distance: distance)
+                  : Container(
+                      child: Center(
+                        child: Text(
+                          'Move the camera away from your phone',
+                          style: GoogleFonts.lato(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
             ),
           ),
 
@@ -314,14 +340,16 @@ class _FaceScanState extends State<FaceScan> with TickerProviderStateMixin {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              IconButton(
-                                icon: const Icon(Icons.more_horiz),
-                                color: Colors.white,
-                                iconSize: 30,
-                                onPressed: () {
-                                  showSettingsBottomSheet();
-                                },
-                              ),
+                              (getDistance() / 60) >= 0.9 && _isCalibrated
+                                  ? AppPrimaryButton(
+                                      buttonHeight: 40,
+                                      buttonWidth: 120,
+                                      buttonText: "Start Test",
+                                      callback: () {
+                                        _slideController.show();
+                                      },
+                                    )
+                                  : Container(),
                             ],
                           ),
                         ),

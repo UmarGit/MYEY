@@ -9,10 +9,10 @@ class DailyGoalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: double.infinity,
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         height: 220,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            borderRadius: const BorderRadius.all(const Radius.circular(20.0)),
             color: AppColors.primaryBackgroundColor),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,8 +36,8 @@ class DailyGoalCard extends StatelessWidget {
                           height: 25,
                           decoration: BoxDecoration(
                               color: HexColor.fromHex("8ACA72"),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0))),
+                              borderRadius: const BorderRadius.all(
+                                  const Radius.circular(20.0))),
                           child: Center(
                             child: Text('3/5',
                                 style: GoogleFonts.lato(
@@ -54,14 +54,14 @@ class DailyGoalCard extends StatelessWidget {
                     ],
                   ),
                   AppSpaces.verticalSpace10,
-                  Text('You marked 3/5 tasks\nare done 🎉',
+                  Text('You marked 3/5 tasks 🎉',
                       style: GoogleFonts.lato(
                           color: HexColor.fromHex("616575"),
                           fontSize: 17,
                           fontWeight: FontWeight.w500)),
-                  AppSpaces.verticalSpace20,
-                  Container(
-                    width: 120,
+                  AppSpaces.verticalSpace40,
+                  SizedBox(
+                    width: 180,
                     height: 40,
                     child: ElevatedButton(
                         onPressed: () {},
@@ -74,7 +74,7 @@ class DailyGoalCard extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(50.0),
                                     side: BorderSide(
                                         color: HexColor.fromHex("C25FFF"))))),
-                        child: Text('All Task',
+                        child: Text('Check Eye Health',
                             style: GoogleFonts.lato(
                                 fontSize: 17,
                                 fontWeight: FontWeight.bold,
@@ -95,12 +95,13 @@ class DailyGoalCard extends StatelessWidget {
                         child: Container(
                           width: 50,
                           height: 50,
-                          decoration: BoxDecoration(shape: BoxShape.circle),
-                          child: ClipOval(
+                          decoration:
+                              const BoxDecoration(shape: BoxShape.circle),
+                          child: const ClipOval(
                             child: Image(
                               fit: BoxFit.contain,
                               image: AssetImage(
-                                "assets/small-logo.png",
+                                "assets/icon/logo.png",
                               ),
                             ),
                           ),
@@ -114,7 +115,7 @@ class DailyGoalCard extends StatelessWidget {
                       child: TweenAnimationBuilder<double>(
                         tween: Tween<double>(begin: 0.0, end: 0.80),
                         duration: const Duration(milliseconds: 1000),
-                        builder: (context, value, _) => Container(
+                        builder: (context, value, _) => SizedBox(
                           width: 90,
                           height: 90,
                           child: CircularProgressIndicator(

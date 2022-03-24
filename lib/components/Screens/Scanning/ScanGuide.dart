@@ -120,13 +120,6 @@ class _ScanGuideState extends State<ScanGuide> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  AppPrimaryButton(
-                      buttonHeight: 50,
-                      buttonWidth: 200,
-                      buttonText: "Get Started",
-                      callback: () {
-                        Get.to(() => const FaceScan());
-                      }),
                   AppSpaces.verticalSpace10,
                 ],
               ),
@@ -149,8 +142,15 @@ class _ScanGuideState extends State<ScanGuide> with TickerProviderStateMixin {
                     padding: const EdgeInsets.only(top: 30.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        AppBackButton(),
+                      children: [
+                        const AppBackButton(),
+                        AppPrimaryButton(
+                            buttonHeight: 40,
+                            buttonWidth: 120,
+                            buttonText: "Get Started",
+                            callback: () {
+                              Get.to(() => const FaceScan());
+                            }),
                       ],
                     ),
                   ),

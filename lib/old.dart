@@ -58,20 +58,17 @@ class _OnBoardingState extends State<OnBoarding> {
     setState(() {
       measurements += 1;
     });
-    print('\n\n\nMeasurements' + measurements.toString());
+    // print('\n\n\nMeasurements' + measurements.toString());
   }
 
   @override
   void initState() {
-    print('setMeasurements');
-
     Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (measurements >= 10) {
         timer.cancel();
       } else {
         setMeasurements();
       }
-      print('Timeresrs');
     });
     super.initState();
   }

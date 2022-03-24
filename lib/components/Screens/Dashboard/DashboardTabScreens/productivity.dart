@@ -10,9 +10,9 @@ class DashboardProductivity extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        DailyGoalCard(),
+        const DailyGoalCard(),
         AppSpaces.verticalSpace20,
-        ProductivityChart()
+        const ProductivityChart()
       ],
     );
   }
