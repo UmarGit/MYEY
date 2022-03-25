@@ -24,10 +24,10 @@ flutter run android
 
 | **Task** | **Deadline** | **Assigned To** |  **`Status`** |
 | --- | --- | --- | --- |
-| Information Gathering | 15th March | `Subhan Talal` | **40%** |
-| Algorithm Development | 12th March 2022 | `Umar Ahmed & Subhan Ahmed` | **60%** |
-| User Interface Design | 14th March 2022 | `Don't Know Yet` | **0%** |
-| Testing & Pitch | 18th March 2022 | `Umer Waseem` | **10%** |
+| Information Gathering | 15th March | `Subhan Talal` | **100%** |
+| Algorithm Development | 12th March 2022 | `Umar Ahmed & Subhan Ahmed` | **95%** |
+| User Interface Design | 14th March 2022 | `Don't Know Yet` | **80%** |
+| Testing & Pitch | 18th March 2022 | `Umer Waseem` | **95%** |
 
 ## Formula
 
