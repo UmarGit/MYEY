@@ -142,8 +142,8 @@ class _OnboardingCarouselState extends State<OnboardingCarousel> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(Icons.email, color: Colors.white),
-                                Text('   Continue with Email',
+                                const Icon(Icons.login, color: Colors.white),
+                                Text('   Continue To Login',
                                     style: GoogleFonts.lato(
                                         fontSize: 20, color: Colors.white)),
                               ],

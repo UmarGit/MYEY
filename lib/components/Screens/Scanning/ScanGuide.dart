@@ -52,9 +52,8 @@ class _ScanGuideState extends State<ScanGuide> with TickerProviderStateMixin {
           Positioned(
             top: 80,
             child: Container(
-              padding: const EdgeInsets.only(top: 40, bottom: 20),
+              padding: const EdgeInsets.only(top: 40),
               width: Utils.screenWidth,
-              height: Utils.screenHeight * 2,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.max,
@@ -120,7 +119,6 @@ class _ScanGuideState extends State<ScanGuide> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-                  AppSpaces.verticalSpace10,
                 ],
               ),
             ),
