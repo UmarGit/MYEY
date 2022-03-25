@@ -272,7 +272,7 @@ class _TakeTestState extends State<TakeTest> {
                                                 ),
                                               ])),
                               ),
-                              AppSpaces.verticalSpace20,
+                              AppSpaces.verticalSpace10,
                               Center(
                                 child: Text(
                                   guessStatus,
@@ -283,11 +283,12 @@ class _TakeTestState extends State<TakeTest> {
                               ),
                               AppSpaces.verticalSpace20,
                               Center(
-                                child: Column(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     AppPrimaryButton(
                                       buttonHeight: 50,
-                                      buttonWidth: 240,
+                                      buttonWidth: 120,
                                       buttonText: isFinished
                                           ? "Continue To Leaderboard"
                                           : isStarted
@@ -303,11 +304,11 @@ class _TakeTestState extends State<TakeTest> {
                                         }
                                       },
                                     ),
-                                    AppSpaces.verticalSpace10,
-                                    !isFinished
+                                    AppSpaces.horizontalSpace10,
+                                    !isFinished && isStarted
                                         ? AppPrimaryButton(
                                             buttonHeight: 50,
-                                            buttonWidth: 240,
+                                            buttonWidth: 120,
                                             buttonText: "Finish Test",
                                             callback: () {
                                               _speechToText.cancel();

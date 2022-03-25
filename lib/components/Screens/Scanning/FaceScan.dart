@@ -173,11 +173,10 @@ class _FaceScanState extends State<FaceScan> with TickerProviderStateMixin {
               overlay: true,
               isDismissible: true,
               body: Container(
-                  padding: const EdgeInsets.only(top: 40, bottom: 20),
+                  padding: const EdgeInsets.only(top: 40),
                   width: Utils.screenWidth,
-                  height: Utils.screenHeight * 2,
                   child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         SizedBox(
