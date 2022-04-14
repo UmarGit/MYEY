@@ -22,7 +22,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: "beta" # 'dev', 'alpha', default to: 'stable'
-          # flutter-version: '1.12.x' # you can also specify exact version of flutter
+          flutter-version: '2.10.2' # you can also specify exact version of flutter
 
       # Clean the Dart code for any errors.
       - run: flutter clean
