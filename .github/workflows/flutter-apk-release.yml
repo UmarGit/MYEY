@@ -37,7 +37,7 @@ jobs:
       # - run: echo "Analyzing code 🔬 "
 
       # Build apk.
-      - run: flutter build apk --release
+      - run: flutter build apk --debug --split-per-abi --ignore-deprecation
       - run: echo "Building apk 📱 "
 
       # Upload generated apk to the artifacts.
