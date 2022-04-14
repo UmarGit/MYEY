@@ -24,6 +24,10 @@ jobs:
           channel: "beta" # 'dev', 'alpha', default to: 'stable'
           # flutter-version: '1.12.x' # you can also specify exact version of flutter
 
+      # Clean the Dart code for any errors.
+      - run: flutter clean
+      - run: echo "Cleaning code 🔬 "
+
       # Get flutter dependencies.
       - run: flutter pub get
       - run: echo "Running flutter pub get command 🔥 "

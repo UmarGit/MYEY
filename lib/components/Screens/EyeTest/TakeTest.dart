@@ -290,7 +290,7 @@ class _TakeTestState extends State<TakeTest> {
                                       buttonHeight: 50,
                                       buttonWidth: 120,
                                       buttonText: isFinished
-                                          ? "Continue To Leaderboard"
+                                          ? "Continue"
                                           : isStarted
                                               ? 'Skip Level $_recognizedWords'
                                               : "Begin Test",
