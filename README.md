@@ -1,4 +1,4 @@
-# Myey [![Myey's Completion Progress - 44%](https://img.shields.io/static/v1?label=Myey's+Completion+Progress&message=44%&color=brightgreen&logo=flutter&logoColor=blue)](https://github.com/UmarGit/MYEY) [![Myey Flutter Release Apk](https://github.com/UmarGit/MYEY/actions/workflows/flutter-apk-release.yml/badge.svg)](https://github.com/UmarGit/MYEY/actions/workflows/flutter-apk-release.yml)
+# Myey [![Myey's Completion Progress - 44%](https://img.shields.io/static/v1?label=Myey's+Completion+Progress&message=73%&color=brightgreen&logo=flutter&logoColor=blue)](https://github.com/UmarGit/MYEY) [![Myey Flutter Release Apk](https://github.com/UmarGit/MYEY/actions/workflows/flutter-apk-release.yml/badge.svg)](https://github.com/UmarGit/MYEY/actions/workflows/flutter-apk-release.yml)
 
 > Our solution is for healthy eyesight by identifying its weaknesses earlier.
 
@@ -25,9 +25,9 @@ flutter run android
 | **Task** | **Deadline** | **Assigned To** |  **`Status`** |
 | --- | --- | --- | --- |
 | Information Gathering | 15th March | `Subhan Talal` | **100%** |
-| Algorithm Development | 12th March 2022 | `Umar Ahmed & Subhan Ahmed` | **95%** |
-| User Interface Design | 14th March 2022 | `Don't Know Yet` | **80%** |
-| Testing & Pitch | 18th March 2022 | `Umer Waseem` | **95%** |
+| Algorithm Development | 12th March 2023 | `Umar Ahmed` | **95%** |
+| User Interface Design | 14th March 2023 | `Subhan Talal & Umar Ahmed` | **80%** |
+| Testing & Pitch | 18th March 2023 | `Subhan Talal` | **95%** |
 
 ## Formula
 
@@ -77,4 +77,6 @@ Screen -> Face: Average the screen to face distance over the last five measureme
 
 # Reference
 
-[GET RESEARCH PAPER HERE](https://github.com/UmarGit/MYEY/research_paper.pdf)
+[Myey - GDSC Solution Challenge 2023](https://youtu.be/fb9akO-zSa0)
+
+[Research Paper](https://github.com/UmarGit/MYEY/research_paper.pdf)
